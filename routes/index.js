@@ -7,4 +7,17 @@ router.get('/', function(req, res, next) {
   res.send("hello world");
 });
 
+router.get('/userinfo', 
+  function(req,res,next) {
+    console.log("METHOD", req.method);
+    next();
+  },
+
+  function(req, res, next) {
+    res.json({
+      username: "CrazyPythonLover1",
+      name: 'MD Mainul Islam'
+    })
+  })
+
 module.exports = router;
