@@ -16,3 +16,8 @@ module.exports.getById = (id) => {
 module.exports.updateById = (id, updatedShop) => {
     return Shop.findByIdAndUpdate(id, updatedShop)
 }
+
+
+module.exports.deleteById = (id) => {
+    return Shop.findOneAndDelete(id)
+}

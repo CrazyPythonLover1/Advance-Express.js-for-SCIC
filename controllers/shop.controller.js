@@ -45,3 +45,15 @@ module.exports.updateById = async (req, res, next) => {
         return res.status(500).json({ message: "Something went wrong" });
     }
 }
+
+// Delet Shop by Id
+module.exports.deleteById = async (req, res, next) => {
+    try {
+        const id = req.params.id
+        const getDeletedData = await shopService.deleteById(id);
+        return res.status(200).json(getDeletedData);
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Something went wrong" });
+    }
+}
