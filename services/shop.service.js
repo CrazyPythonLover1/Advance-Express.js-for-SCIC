@@ -11,3 +11,8 @@ module.exports.getAll = () => {
 module.exports.getById = (id) => {
     return Shop.findById(id)
 }
+
+
+module.exports.updateById = (id, updatedShop) => {
+    return Shop.findByIdAndUpdate(id, updatedShop)
+}
