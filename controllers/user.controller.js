@@ -49,6 +49,69 @@ module.exports.register = async (req, res, next) => {
                 token: null,
                 message: "something went wrong"
                      
-            })
+            });
     }
-}
+};
+
+
+const comparePassword = (password, hash) => {
+    return new Promise((resolve, reject) => {
+        bcrypt.compare(password, hash, (err, match) => {
+            if (err) reject(err);
+            resolve(match);
+        });
+    });
+};
+
+module.exports.login = async (req, res, next) => {
+    try {
+        const user = await userService.findUserByEmail(req.body.email);
+        const matchPassword = await comparePassword(
+            req.body.password,
+            user.password
+        );
+        console.log(matchPassword);
+        if (!matchPassword) {
+            return res
+                .status(400)
+                .json({
+                    error: false,
+                    data: null,
+                    token: null,
+                    message: " User Credential didn't match"
+                });
+        }
+        const userObj = JSON.parse(JSON.stringify(user));
+        delete userObj.password;
+
+        const token = await jwt.sign(
+            {
+                data: userObj
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "24h",
+            }
+        );
+
+        return res
+            .status(200)
+            .json({
+                error: false,
+                data: null,
+                token: token,
+                message: "login successful",
+            });
+
+    } catch (e) {
+        console.log(e);
+        return res
+            .status(500)
+            .json({
+                error: e,
+                data: null,
+                token: null,
+                message: "Something went wrong"
+            });
+    }
+};
