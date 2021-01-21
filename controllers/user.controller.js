@@ -2,6 +2,37 @@ const userService = require("../services/user.service");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+module.exports.isAuthenticated = async (req, res, next) => {
+    try {
+        const verified = await jwt.verify(
+            req.headers.token,
+            process.env.JWT_SECRET
+        );
+        console.log("JWTTTTTTTTTTTT verified", verified);
+        if (!verified) {
+            return res
+                .status(400)
+                .json({
+                    error: true,
+                    data: null,
+                    token: null,
+                    message: "user not authenticated",
+                });
+        }
+        next();
+    } catch (e) {
+        console.error(e);
+        return res
+            .status(500)
+            .json({
+                error: e.message,
+                data: null,
+                token: null,
+                message: "Something went wrong"
+            })
+    }
+}
+
 const hashPassword = (password, saltRound) => {
     return new Promise((resolve,reject) => {
         bcrypt.hash(password, saltRound, (err, hash) => {
