@@ -16,5 +16,8 @@
     "mongoose": "^5.11.12",
     "morgan": "~1.9.1",
     "snyk": "^1.437.4"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0"
   }
 }
