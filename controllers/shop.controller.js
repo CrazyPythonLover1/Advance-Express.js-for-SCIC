@@ -1,7 +1,7 @@
 const shopService = require('../services/shop.service');
 
 // create data for shop
-module.exports.create = async (req, res, next) => {
+module.exports.create = async (req, res) => {
 	try {
 		const shop = await shopService.create(req.body);
 		return res.status(200).json(shop);
@@ -12,7 +12,7 @@ module.exports.create = async (req, res, next) => {
 };
 
 // get all data from shop collection
-module.exports.getAll = async (req, res, next) => {
+module.exports.getAll = async (req, res) => {
 	try {
 		const AllShopData = await shopService.getAll();
 		return res.status(200).json(AllShopData);
@@ -23,7 +23,7 @@ module.exports.getAll = async (req, res, next) => {
 };
 
 // find one data by Id
-module.exports.getById = async (req, res, next) => {
+module.exports.getById = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const getShopById = await shopService.getById(id);
@@ -35,10 +35,10 @@ module.exports.getById = async (req, res, next) => {
 };
 
 // find Id and update shop
-module.exports.updateById = async (req, res, next) => {
+module.exports.updateById = async (req, res) => {
 	try {
 		const id = req.params.id;
-		const getUpdatedShop = await shopService.updateById(id, req.body);
+		await shopService.updateById(id, req.body);
 		return res.status(200).json(req.body);
 	} catch (e) {
 		console.error(e);
@@ -47,7 +47,7 @@ module.exports.updateById = async (req, res, next) => {
 };
 
 // Delet Shop by Id
-module.exports.deleteById = async (req, res, next) => {
+module.exports.deleteById = async (req, res) => {
 	try {
 		const id = req.params.id;
 		const getDeletedData = await shopService.deleteById(id);

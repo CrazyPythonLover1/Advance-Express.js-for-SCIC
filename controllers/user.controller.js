@@ -8,10 +8,7 @@ module.exports.isAuthenticated = async (req, res, next) => {
 			req.headers.token,
 			process.env.JWT_SECRET
 		);
-		console.log(
-			'JWTTTTTTTTTTTT verified',
-			verified
-		);
+		
 		if (!verified) {
 			return res.
 				status(400).
@@ -49,7 +46,7 @@ const hashPassword = (password, saltRound) => new Promise((resolve, reject) => {
 	);
 });
 
-module.exports.register = async (req, res, next) => {
+module.exports.register = async (req, res) => {
 	try {
 		const {body} = req,
 			saltRound = 10;
@@ -108,14 +105,13 @@ const comparePassword = (password, hash) => new Promise((resolve, reject) => {
 	);
 });
 
-module.exports.login = async (req, res, next) => {
+module.exports.login = async (req, res) => {
 	try {
 		const user = await userService.findUserByEmail(req.body.email),
 			matchPassword = await comparePassword(
 				req.body.password,
 				user.password
 			);
-		console.log(matchPassword);
 		if (!matchPassword) {
 			return res.
 				status(400).
@@ -149,7 +145,6 @@ module.exports.login = async (req, res, next) => {
 			});
 
 	} catch (e) {
-		console.log(e);
 		return res.
 			status(500).
 			json({
